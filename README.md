@@ -1,195 +1,127 @@
-Task 1: Trail creation and
+Task 1: Methods on BSTs
 
-Edit methods
+• In this task, you will be asked to complete as well update an existing
+BST implementation.
 
-• As indicated in the A2 specification, please make sure you read the slide “what is trail”. You should know that the trail is implemented using the
-concept of linked structure. Here’s a couple of important points:
-• A trailstore must be placed/stored inside a trail. e.g. you can’t have
-trailsplit.following point to a trailsplit or trailseries or none. Thus its
-either point to Trail(TrailSeries()) or Trail(TrailSplit()) or Trail(None).
-Same goes for trailsplit.path_top, path_bottom, or path_follow.
-• A mountain can only be part of a trailseries.
-• Most importantly, in a trailsplit, both path_top and path_bottom will
-eventually lead to / connected to path_follow. Note that “eventually” means it may not be directly linked. For example, path_top may point
-to one or more trail first before finally point to the path_follow. This particularly important when you want to traverse the trails. (i.e.
-deciding which trail to go next)
+• Part 1: You need to complete get_minimal and get_successor method
+so that it will complete the existing delete_aux() implementation. Refer
+to the week 10 pre-reading material on the idea of get_successor
+implementation for the purpose of deleting a node.
 
-Task 1: Trail creation and
+• Part 2: You are ask to update some method in the BST implementation
+so that you can implement Part 3 efficiently. Basically, you need to
+modify insert_aux and delete_aux so that during insert and delete,
+each node will have subtree_size count. subtree_size is basically the
+number of node inside that particular subtree. Thus when you are
+accessing a node, you should know how many node are there in the
+subtree where that node is the root. if a node doesn't have a child, that
+node will have subtree_size 1. (only that node basically)
 
-Edit methods
+Task 1: Methods on BSTs
 
-• Now that you (hopefully) have understood what a trail is and how it is structured, in
-task 1 you need to complete the implementation of Trail, TrailSeries and TrailSplit. If
-you refer back to our linked list implementation, we use Node and link it. You can
-think of Trail as a Node that need to be updated in order to make it as part of a
-particular trails set.
-• That said, this task is all about updating the link and content of the trail, trailseries,
-and trailsplit!
-• When implementing the method, remember that you are working on an instance of
-that particular class and most importantly, as stated in the specification, you should
-return a new (or the old) instance. What this means, you should not update the
-instance. For example:
-• There should not be any update statement such as self.following = None,
-self.mountain = mountain, self.store = None, self.path_top = None, etc.
-• Thus it should be either returning new instance (e.g. return TrailSeries(....) or old
-instance (e.g. return self.following)
+• Part 3: This is the main part of Task 1 where you need to
+implement kth_smallest(k, node) method. Its basically a tree
+recursive algorithm to search for kth smallest value inside a
+sub tree of the give node. Referring to the example in the A3
+specification, when calling kth_smallest(2, node-85), it will return node-85 itself because a sub tree with node-85 as its
+root only has one child and that child node have a key of 80.
+Thus node-80 will be the 1st smallest and 85 will be 2nd
+smallest. since k=2, 85 will be returned. if we call
+kth_smallest(1, node-85), it will return node-80 since k=1.
 
-Task 2: Traversing Trails with
+• If the given k is bigger than the node’s subtree_size, its up to
+you to return None or raise an error. (currently there’s no
+mention about how this should be handled in the specification)
 
-Terrific Tricks
+Task 2: Ratio elements
 
-• By the time you start this task, you should have completed
-Task 1.
+• In this task, you need to choose the appropriate ADT to implement
+the Percentile class. The main method that you need to implement
+is ratio(). ratio is a method that will return the points inside the
+percentile object that is higher than x% of the points but smaller
+than y% of the element. Using the example given in the
+specification, if the percentile objects contains the following
+points: [4, 9, 14, 15, 16, 82, 87, 91, 92, 99]
 
-• In this task, you only need to complete one method called
-follow_path.
+• for ratio(13,10) means bigger than 13% of the points and
+smaller than 42% of the points. Thus, 13/100 * 10 (number of
+points in the example above) is 1.3, if we round up, basically
+bigger than 2 of the smallest points (which is 4 and 9) and
+10/100 * 10 is 1 thus less than 1 of the largest points (which is
+99), hence it will return [14,15,16,82,87,91,92]
 
-• It is basically a method that will traverse the trails starting
-from the particular instance. That is, the starting trail
-should be self.store.
+Task 3: ThreeDeeBeeTree
 
-• You also need to implement this method using a loop
-(iterative based) use appropriate ADT to assist the
-process.
+• In this task, you are asked to implement a new type of Tree ADT called
+ThreeDeeBeeTree. Its not a binary tree since it can have up to 8 children.
+• You could either have 8 individual child pointer or by having the children
+as a list of BeeNode where the index of where each child should sit in the
+list will depends on the key (point) of the child - based on the octant. For
+example, you could have the the first octant (as index 0) when all point of the child is bigger than the parent’s point.
+• The key of a BeeNode will be the point (e.g. using the 5 points example
+in the specification, (5,-6,7) is the key of the root.
+• Still using the example, point (6,0,10) is the child of point (5,-6,7) that sit
+at the first octant (using example above) because 6>5, 0>-6, and 10>7.
+• Remember to update subtree_size when inserting a new point/node. - in
+a similar way as you implement it in the BST of task 1.
 
-Task 2: Traversing Trails with
+Task 4: Balancing Bees
 
-Terrific Tricks
+• The main idea of this task is we want to balance a ThreeDeeBeeTree. But
+instead of ensuring the ThreeDeeBeeTree always balance whenever we
+insert a new point/node, you are asked to write a function called
+make_ordering() which will basically to order the given list of points so
+that when we insert that points into the ThreeDeeBeeTree one by one, the
+resulted ThreeDeeBeeTree structure will be ‘balanced’.
 
-• Input of follow_path is WalkerPersonality instance. Note that
-WalkerPersonality has been fully implemented and thus you
-just need to use it. e.g. call personality.add_mountain() or
-personality.select_branch() accordingly.
+• As stated in the specification, the definition of ‘balanced’ in
+ThreeDeeBeeTree is for any node in the ThreeDeeBeeTree, splitting it's
+children by those with a negative offset of one of the three axis and those
+with a positive offset of the same axis must have a size ratio of at most
+1:7 (Or both sides have at most 17 nodes). - Important to note that ‘ratio
+1:7’ here is not the same with percentile ratio(1,7).
+• See the hint provided in the specification. Your main challenge is to find
+the right ‘a’ value to pass to percentile ratio(a,a) for checking the valid x,
+y and z indices. You may use the size ratio info above to find the right ‘a’ value.
 
-• The important key about WalkerPersonality implementation
-is that if select_branch() returns True means you should
-follow the top brach, if it returns False, you should follow the
-bottom branch.
+Task 4: Balancing Bees
 
-• Knowledge about how the path_follow works under
-TrailSeries would be useful here.
+• the function make_ordering() is an independent function
+and not part of the ThreeDeeBeeTree class. see the test
+case for an example of how we can use the
+make_ordering() function to make sure we create a
+balanced ThreeDeeBeeTree when we insert the list
+produced by make_ordering().
 
-Task 3: Double Keyed Table
+• Similar to the make_balanced() method in Week10 Applied
+Optional (which the solution is now available), you can use
+recursive approach for make_ordering()
 
-• This task is sort of taking a break from the Mountain
-Climber application! You task is to implement a new type of
-hashtable and it has nothing to do with the Trails. (although
-you may choose to use it in later task, but the
-implementation of Double Keyed Table should not be
-specific to Trails).
+Task 5: Sweeping through
 
-• As per the specification, double keyed table uses linear
-probing to handle collision.
+beehives
 
-• For each data to insert, there will be 2 keys and 1 value.
-The first key will decide where in the top level table the low
-level table is located, and the second key will then decide
-where the value will be stored.
+• This is an optional (and rather complicated) task and won’t
+be marked (even you implement it correctly). Do it only if
+you have time and for the sake of fulfilling your curiosity and
+harnessing your problem solving skill!
 
-Task 3: Double Keyed Table
+Task 6: Barry B. Benson's
 
-• Here’s some important points:
+Best Beehive
 
-• The low level table should be just an instance of LinearProbeTable
-whereas the top level table is an array.
+• In this task, you need to complete the implementation of BeehiveSelector
+class which basically will act as a container to the beehive object. You need
+to chose suitable ADT as the data structure behind the BeehiveSelector.
 
-• the top level table should store the first key and instance of low level
-table. For example, when inserting key1, key2, value1, if key1
-hashed into position 3, then key1 and instance of low level table
-should be stored in position 3 of the top level table. and if key2
-hashed into position 5, then key2 and value1 should be stored in
-position 5 of low level table.
-
-• iter_keys and iter_values must return an iterator object which can
-be used by the for item in x loop or next() method to return all
-key1,key2,value pair of the double keyed table. Thus you would
-need to implement an iterator class or generator.
-
-Task 4: Infinite Depth Hash
-
-Table
-
-• This task is also has nothing to do with the Trails. Similar to
-double keyed table, although you may choose to use this
-infinite depth hash table in later task, but your implementation
-of infinite depth hash table should not be specific to Trails.
-
-• Infinite depth hash table is not using linear probe to handle
-collision. Instead, it handle collision by creating new subtable
-at the next level and reinsert both new data and the existing
-data. if a subtable already exist at that position, it will attempt
-to insert the new data at the subtable. This process of nesting
-subtable continues until there’s an empty position the subtable
-at one of the level.
-
-• the size of the main table is the same with all its subtable at all
-level which is 27.
-
-Task 4: Infinite Depth Hash
-
-Table
-
-• Here’s some important points:
-• At every table (main or subtable), it will either store a pair of key and value
-or a pair of key and instance of subtable.
-• Basically when a table store a pair of key1 and instance of subtable, the
-instance of subtable will store all keys starts with key1.
-• Except the main table, all subtable must at least have two pair of data
-stored. That is, if after deleting one data pair the subtable only contains
-one pair of data, the subtable at this particular level should be deleted
-and the last pair should reinserted at its parent table (at the previous level)
-and the same process applies unless the parent is the main table.
-• for example: using the sample in the A2 sheet, deleting mine, it will
-trigger reinsertion of mining into the main table since mining will be the
-only pair in the current subtable, and all its parent subtable will only
-have one pair until it reaches the main table.
-
-Task 5: Mountain Organiser
-
-• In this task, you will continue to work on the trails! You need
-to complete the implementation of two methods under the
-mountain organiser class. Here’s some important point:
-
-• The mountain organiser keep a list of mountains in sorted
-by its rank (from lowest to highest). The rank is based on
-the length.
-
-• If two or more mountain having the same length, it will be
-ranked based lexicographical order of its name.
-
-• In the two method that you need to implement, you can
-use (and modify) the provided algorithm
-
-Task 6: Mountain Manager
-
-• This is the last task you need to do to make the Mountain
-Climber app’s graph view to function properly. The
-MountainManager class need to have an ADT to store the
-mountain. The ADT required would be hashtable (hence
-choose between LinearProbeTable, DoubleKeyedTable or
-Infinite Depth Hash Table). Here’s some important point:
-
-• By using the chosen ADT to store the mountain, you
-should be able to filter the mountain by difficulty.
-
-• In the group_by_difficulty() method, you should return a
-sorted list of the mountains by its difficulty.
-
-Task 7: More Trail methods
-
-• In this last task, we aim to write more method to manipulate the
-trails as follows:
-
-• collect_all_mountains method basically will collect all mountains
-starting from the trail instance where this method called. i.e.
-starting from self.store.
-
-• length_k_paths method basically will return a list of all possible
-path with the size of k starting from the trail instance where this
-method is called. i.e. starting from self.store. Unlike the
-follow_path you previously implemented where it just follow one
-possible path (either following top or bottom branch), in
-length_k_paths, you will need to explore all possible path and if
-in that path you found k number of mountains, add that list of k
-mountains in the returned list. You are allowed to use a recursive
-approach combined with the help of appropriate ADT.
+• You need to implement 3 method (other than __init__) inside the
+BeehiveSelector class, namely add_beehive, set_all_beehives, and
+harvest_best_beehives.
+• The method harvest_best_beehives basically will get the ‘best’ beehive from
+the ADT and return the emerald value of that beehives. As per the
+specification, emerald can be calculated by getting the min between honey
+capacity and honey volume and multiply it with the nutrient factor.
+• Since it is stated that the creator will often pick up and put down
+beehives and assuming the selected ‘best’ beehive will be ‘consumed’,
+thus if the consumed value is still less than that beehives volume, you
+need to put back that beehive (with reduced volume) into the ADT.
